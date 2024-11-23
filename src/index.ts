@@ -15,52 +15,64 @@ import {
   Metadata,
 } from "./interfaces/route-metadata";
 
-const app = express();
+class App {
+  private readonly app = express();
+  private readonly controllers = [
+    DownloadSongController,
+    SearchSongsController,
+  ];
 
-app.use(bodyParser.json());
+  constructor() {
+    this.app.use(bodyParser.json());
 
-const controllers = [DownloadSongController, SearchSongsController];
+    this.initializeRoutes();
 
-function getMethodsWithMetadata({ prototype }: Controller) {
-  const properties = Object.getOwnPropertyNames(prototype);
+    this.app.use(errorHandler);
 
-  const routesMetadata = properties.reduce(
-    (previousValue: ControllerRouteMetadata[], property) => {
-      const metadata: Metadata = Reflect.getMetadata(
-        "route",
-        prototype,
-        property
-      );
+    this.app.listen(1234, () => console.log("listen on 1234"));
+  }
 
-      if (!metadata) return previousValue;
+  initializeRoutes() {
+    this.controllers.forEach((controllerClass) => {
+      const router = express.Router();
+      const controller: Controller = new controllerClass();
 
-      return [
-        ...previousValue,
-        { callbackPropertyName: property, ...metadata },
-      ];
-    },
-    []
-  );
+      const routes = this.getMethodsWithMetadata(controllerClass);
 
-  return routesMetadata;
+      routes.forEach(({ httpMethod, callbackPropertyName, path }) => {
+        const method = router[httpMethod].bind(router);
+        const callback = controller[callbackPropertyName];
+
+        method(path, callback.bind(controller));
+      });
+
+      this.app.use(controller.prefix, router);
+    });
+  }
+
+  getMethodsWithMetadata({ prototype }: Controller) {
+    const properties = Object.getOwnPropertyNames(prototype);
+
+    const routesMetadata = properties.reduce(
+      (previousValue: ControllerRouteMetadata[], property) => {
+        const metadata: Metadata = Reflect.getMetadata(
+          "route",
+          prototype,
+          property
+        );
+
+        if (!metadata) return previousValue;
+
+        return [
+          ...previousValue,
+          { callbackPropertyName: property, ...metadata },
+        ];
+      },
+      []
+    );
+
+    return routesMetadata;
+  }
 }
 
-controllers.forEach((controllerClass) => {
-  const router = express.Router();
-  const controller: Controller = new controllerClass();
-
-  const routes = getMethodsWithMetadata(controllerClass);
-
-  routes.forEach(({ httpMethod, callbackPropertyName, path }) => {
-    const method = router[httpMethod].bind(router);
-    const callback = controller[callbackPropertyName];
-
-    method(path, callback.bind(controller));
-  });
-
-  app.use(controller.prefix, router);
-});
-
-app.use(errorHandler);
-
-app.listen(1234, () => console.log("listen on 1234"));
+new App();
