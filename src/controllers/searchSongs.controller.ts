@@ -1,20 +1,16 @@
 import { HttpStatusCode } from "axios";
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 
 import { ApiError } from "../classes/api-error";
-import { Controller } from "../interfaces/controller";
+import { Get } from "../decorators/get.decorator";
 import { SearchSongsService } from "../services/searchSongs.service";
 
-export class SearchSongsController implements Controller {
+export class SearchSongsController {
   prefix = "";
-  router = Router();
   private readonly searchSongsService = new SearchSongsService();
 
-  constructor() {
-    this.router.get("", this.searchSongs.bind(this));
-  }
-
-  private async searchSongs(req: Request, res: Response) {
+  @Get("/")
+  public async searchSongs(req: Request, res: Response) {
     const { query } = req.query;
 
     const length = query?.length as number;
