@@ -4,20 +4,17 @@ import express, { Request, Response } from "express";
 
 import { HttpStatusCode } from "axios";
 import { ApiError } from "../classes/api-error";
-import { Controller } from "../interfaces/controller";
 import { DownloadSongService } from "../services/downloadSong.service";
+import { Post } from "../decorators/post.decorator";
 
-export class DownloadSongController implements Controller {
+export class DownloadSongController {
   prefix = "/download";
   router = express.Router();
   private readonly downloadSongService = new DownloadSongService();
   private readonly idRegex = /^[a-zA-Z0-9-_]{11}$/;
 
-  constructor() {
-    this.router.post("", this.downloadVideo.bind(this));
-  }
-
-  async downloadVideo(req: Request, res: Response) {
+  @Post("")
+  public async downloadVideo(req: Request, res: Response) {
     const { videoId } = req.body;
 
     const idIsValid = this.idRegex.test(videoId);
