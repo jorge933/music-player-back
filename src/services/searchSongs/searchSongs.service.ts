@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import { buildUrlSearchParams } from "../helpers/buildUrlSearchParams";
+import { buildUrlSearchParams } from "../../helpers/buildUrlSearchParams";
 
-import { VideoInfosResponse } from "../interfaces/yt-api-response";
+import { VideoInfosResponse } from "../../interfaces/yt-api-response";
 
 import {
   MusicAlbumCompact,

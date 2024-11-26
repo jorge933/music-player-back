@@ -3,14 +3,14 @@ import { Request, Response } from "express";
 
 import { ApiError } from "../classes/api-error";
 import { Get } from "../decorators/get.decorator";
-import { SearchSongsService } from "../services/searchSongs.service";
+import { SearchSongsService } from "../services/searchSongs/searchSongs.service";
 
 export class SearchSongsController {
   prefix = "";
   private readonly searchSongsService = new SearchSongsService();
 
   @Get("/")
-  public async searchSongs(req: Request, res: Response) {
+  async searchSongs(req: Request, res: Response) {
     const { query } = req.query;
 
     const length = query?.length as number;
