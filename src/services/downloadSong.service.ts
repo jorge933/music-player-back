@@ -36,17 +36,19 @@ export class DownloadSongService {
     });
     const buffers: Buffer[] = [];
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       stream.on("data", (chunk: Buffer) => {
         buffers.push(chunk);
       });
 
       stream.on("error", (error) => {
-        throw new ApiError(
+        const apiError = new ApiError(
           error.message,
           HttpStatusCode.InternalServerError,
           "downloadError"
         );
+
+        reject(apiError);
       });
 
       stream.on("end", () => {
