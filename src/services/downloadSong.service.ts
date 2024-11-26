@@ -30,7 +30,7 @@ export class DownloadSongService {
     return outputFileName;
   }
 
-  private async downloadVideo(info: VideoInfo): Promise<Buffer> {
+  async downloadVideo(info: VideoInfo): Promise<Buffer> {
     const stream = ytdl.downloadFromInfo(info, {
       quality: "highestaudio",
     });
