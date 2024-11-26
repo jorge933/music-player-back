@@ -4,7 +4,7 @@ import express, { Request, Response } from "express";
 
 import { HttpStatusCode } from "axios";
 import { ApiError } from "../classes/api-error";
-import { DownloadSongService } from "../services/downloadSong.service";
+import { DownloadSongService } from "../services/downloadSong/downloadSong.service";
 import { Post } from "../decorators/post.decorator";
 
 export class DownloadSongController {

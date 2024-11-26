@@ -2,7 +2,7 @@ import fs from "fs";
 import path, { dirname } from "path";
 
 import ytdl, { videoInfo as VideoInfo } from "@distube/ytdl-core";
-import { ApiError } from "../classes/api-error";
+import { ApiError } from "../../classes/api-error";
 import { HttpStatusCode } from "axios";
 
 export class DownloadSongService {

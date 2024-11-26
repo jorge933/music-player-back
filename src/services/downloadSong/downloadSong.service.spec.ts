@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
-import { ApiError } from "../classes/api-error";
+import { ApiError } from "../../classes/api-error";
 import { DownloadSongService } from "./downloadSong.service";
 
 jest.mock("fs");
