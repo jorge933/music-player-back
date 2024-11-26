@@ -11,6 +11,6 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true
   },
-  "include": ["src/*", "env.d.ts"],
+  "include": ["src/**/*.ts", "env.d.ts"],
   "exclude": ["**/*.spec.ts"]
 }
