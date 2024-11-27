@@ -9,7 +9,6 @@ import { Post } from "../../decorators/post.decorator";
 
 export class DownloadSongController {
   prefix = "/download";
-  router = express.Router();
   private readonly downloadSongService = new DownloadSongService();
   private readonly idRegex = /^[a-zA-Z0-9-_]{11}$/;
 
