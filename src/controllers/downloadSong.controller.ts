@@ -14,7 +14,7 @@ export class DownloadSongController {
   private readonly idRegex = /^[a-zA-Z0-9-_]{11}$/;
 
   @Post("")
-  public async downloadVideo(req: Request, res: Response) {
+  async downloadVideo(req: Request, res: Response) {
     const { videoId } = req.body;
 
     const idIsValid = this.idRegex.test(videoId);
