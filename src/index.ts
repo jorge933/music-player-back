@@ -7,7 +7,7 @@ import "reflect-metadata";
 
 import { errorHandler } from "./middlewares/error-handler.middleware";
 
-import { DownloadSongController } from "./controllers/downloadSong.controller";
+import { DownloadSongController } from "./controllers/downloadSong/downloadSong.controller";
 import { SearchSongsController } from "./controllers/searchSongs.controller";
 import {
   Controller,
