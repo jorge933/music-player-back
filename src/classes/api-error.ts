@@ -1,10 +1,9 @@
 export class ApiError extends Error {
-  public readonly statusCode: number;
-  public readonly type: string;
-
-  constructor(message: string, statusCode: number, type: string) {
+  constructor(
+    message: string,
+    readonly statusCode: number,
+    readonly type: string
+  ) {
     super(message);
-    this.statusCode = statusCode;
-    this.type = type;
   }
 }
