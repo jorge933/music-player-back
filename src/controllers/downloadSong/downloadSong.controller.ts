@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { HttpStatusCode } from "axios";
 import { ApiError } from "../../classes/api-error";
