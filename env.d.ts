@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    BASE_URL: string;
+    BASE_API_URL: string;
     API_KEY: string;
   }
 }
