@@ -17,8 +17,7 @@
     "body-parser": "^1.20.3",
     "express": "^4.21.0",
     "express-async-errors": "^3.1.1",
-    "reflect-metadata": "^0.2.2",
-    "youtubei": "^1.5.4"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
