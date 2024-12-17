@@ -2,70 +2,56 @@ import axios from "axios";
 
 import { buildUrlSearchParams } from "../../helpers/buildUrlSearchParams";
 
-import { VideoInfosResponse } from "../../interfaces/yt-api-response";
-
 import {
-  MusicAlbumCompact,
-  MusicArtistCompact,
-  MusicClient,
-  MusicPlaylistCompact,
-  MusicVideoCompact,
-  Shelf,
-} from "youtubei";
-
-type SearchResults = Shelf<
-  | MusicVideoCompact[]
-  | MusicAlbumCompact[]
-  | MusicPlaylistCompact[]
-  | MusicArtistCompact[]
->[];
-
+  SearchItem,
+  VideoInfo,
+  VideoInfosResponse,
+  YouTubeSearchResponse,
+} from "../../interfaces/yt-api-response";
+import { ApiError } from "../../classes/api-error";
 export class SearchSongsService {
-  private readonly client = new MusicClient();
-  private readonly videoTypes = ["Songs", "Videos", "Podcasts", "Episodes"];
+  BASE_PROPERTIES = {
+    topicId: "/m/04rlf",
+    part: "snippet",
+    maxResults: "10",
+    type: "video",
+  };
 
   async searchSongs(query: string) {
-    const results = await this.client.search(query);
-    const ids = await this.getVideosIds(results);
+    const { API_KEY, BASE_API_URL } = process.env;
+    const params = buildUrlSearchParams({
+      ...this.BASE_PROPERTIES,
+      key: API_KEY,
+      q: query,
+    });
+    const url = `${BASE_API_URL}/search?${params.toString()}`;
+    const { data: results, status } = await axios.get<YouTubeSearchResponse>(
+      url
+    );
+
+    if (status !== 200)
+      throw new ApiError("Error on youtube api", 500, "youtubeApiError");
+
+    const ids = await this.getVideosIds(results.items);
 
     if (!ids.length) return [];
 
-    const filteredSongs = await this.filterVideosByAgeRestriction(ids);
-
-    return filteredSongs;
-  }
-
-  private async getVideosIds(results: SearchResults) {
-    const ids = results.reduce((previousValue: string[], { title, items }) => {
-      const isIncluded = this.videoTypes.includes(title);
-      const newValue = [...previousValue];
-
-      if (isIncluded) {
-        items.forEach(({ id }) => {
-          if (id) newValue.push(id);
-        });
-      }
-
-      return newValue;
-    }, []);
-
-    return ids;
-  }
-
-  private async filterVideosByAgeRestriction(ids: string[]) {
     const {
       data: { items },
     } = await this.getVideoInfos(ids);
 
-    const filteredVideos = items.filter(
-      ({ contentDetails: { contentRating } }) => {
-        const { ytRating } = contentRating;
+    const filteredSongs = await this.filterVideosByAgeRestriction(items);
 
-        return ytRating !== "ytAgeRestricted";
-      }
+    return filteredSongs;
+  }
+
+  private async getVideosIds(results: SearchItem[]) {
+    const ids = results.reduce(
+      (previous: string[], item) => [...previous, item.id.videoId],
+      []
     );
 
-    return filteredVideos;
+    return ids;
   }
 
   private async getVideoInfos(ids: string[]) {
@@ -80,5 +66,17 @@ export class SearchSongsService {
     const videos = await axios.get<VideoInfosResponse>(url);
 
     return videos;
+  }
+
+  private async filterVideosByAgeRestriction(items: VideoInfo[]) {
+    const filteredVideos = items.filter(
+      ({ contentDetails: { contentRating } }) => {
+        const { ytRating } = contentRating;
+
+        return ytRating !== "ytAgeRestricted";
+      }
+    );
+
+    return filteredVideos;
   }
 }
