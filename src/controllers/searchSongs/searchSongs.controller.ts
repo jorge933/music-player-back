@@ -1,9 +1,9 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response } from "express";
 
-import { ApiError } from "../classes/api-error";
-import { Get } from "../decorators/get.decorator";
-import { SearchSongsService } from "../services/searchSongs/searchSongs.service";
+import { ApiError } from "../../classes/api-error";
+import { Get } from "../../decorators/get.decorator";
+import { SearchSongsService } from "../../services/searchSongs/searchSongs.service";
 
 export class SearchSongsController {
   prefix = "";
