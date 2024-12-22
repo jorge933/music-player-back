@@ -2,7 +2,7 @@ import {
   DecoratorHttpMethods,
   Metadata,
   Path,
-} from "../interfaces/route-metadata";
+} from "../interfaces/route-metadata.interface";
 
 export function Route(route: Path, httpMethod: DecoratorHttpMethods) {
   return function (target: Object, propertyKey: string) {

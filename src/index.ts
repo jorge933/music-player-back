@@ -13,7 +13,7 @@ import {
   Controller,
   ControllerRouteMetadata,
   Metadata,
-} from "./interfaces/route-metadata";
+} from "./interfaces/route-metadata.interface";
 
 class App {
   private readonly app = express();

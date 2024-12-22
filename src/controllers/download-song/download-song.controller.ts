@@ -6,7 +6,7 @@ import { HttpStatusCode } from "axios";
 import { ApiError } from "../../classes/api-error";
 import { DownloadSongService } from "../../services/download-song/download-song.service";
 import { Post } from "../../decorators/post.decorator";
-import { Controller } from "../../interfaces/route-metadata";
+import { Controller } from "../../interfaces/route-metadata.interface";
 
 export class DownloadSongController implements Controller {
   prefix = "/download/" as const;

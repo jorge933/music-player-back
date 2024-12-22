@@ -7,7 +7,7 @@ import {
   VideoInfo,
   VideoInfosResponse,
   YouTubeSearchResponse,
-} from "../../interfaces/yt-api-response";
+} from "../../interfaces/yt-api-response.interface";
 import { ApiError } from "../../classes/api-error";
 export class SearchSongsService {
   BASE_PROPERTIES = {
