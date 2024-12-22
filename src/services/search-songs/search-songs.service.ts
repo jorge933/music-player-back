@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 import { buildUrlSearchParams } from "../../helpers/buildUrlSearchParams";
 
@@ -30,7 +30,11 @@ export class SearchSongsService {
     );
 
     if (status !== 200)
-      throw new ApiError("Error on youtube api", 500, "youtubeApiError");
+      throw new ApiError(
+        "Error on youtube api",
+        HttpStatusCode.InternalServerError,
+        "youtubeApiError"
+      );
 
     const ids = await this.getVideosIds(results.items);
 
