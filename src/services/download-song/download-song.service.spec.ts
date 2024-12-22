@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
 import { ApiError } from "../../classes/api-error";
-import { DownloadSongService } from "./downloadSong.service";
+import { DownloadSongService } from "./download-song.service";
 
 jest.mock("fs");
 jest.mock("path");
