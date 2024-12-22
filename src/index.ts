@@ -7,8 +7,8 @@ import "reflect-metadata";
 
 import { errorHandler } from "./middlewares/error-handler.middleware";
 
-import { DownloadSongController } from "./controllers/downloadSong/downloadSong.controller";
-import { SearchSongsController } from "./controllers/searchSongs.controller";
+import { DownloadSongController } from "./controllers/download-song/download-song.controller";
+import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
 import {
   Controller,
   ControllerRouteMetadata,

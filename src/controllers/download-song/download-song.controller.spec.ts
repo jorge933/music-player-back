@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { DownloadSongController } from "./downloadSong.controller";
+import { DownloadSongController } from "./download-song.controller";
 
 import fs from "fs";
 import { ApiError } from "../../classes/api-error";
