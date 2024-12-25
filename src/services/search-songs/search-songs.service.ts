@@ -1,14 +1,13 @@
 import axios, { HttpStatusCode } from "axios";
 
+import { ApiError } from "../../classes/api-error";
 import { buildUrlSearchParams } from "../../helpers/buildUrlSearchParams";
-
 import {
   SearchItem,
   VideoInfo,
   VideoInfosResponse,
   YouTubeSearchResponse,
 } from "../../interfaces/yt-api-response.interface";
-import { ApiError } from "../../classes/api-error";
 export class SearchSongsService {
   BASE_PROPERTIES = {
     topicId: "/m/04rlf",
@@ -40,16 +39,14 @@ export class SearchSongsService {
 
     if (!ids.length) return [];
 
-    const {
-      data: { items },
-    } = await this.getVideoInfos(ids);
+    const items = await this.getVideoInfos(ids);
 
     const filteredSongs = await this.filterVideosByAgeRestriction(items);
 
     return filteredSongs;
   }
 
-  private async getVideosIds(results: SearchItem[]) {
+  async getVideosIds(results: SearchItem[]) {
     const ids = results.reduce(
       (previous: string[], item) => [...previous, item.id.videoId],
       []
@@ -58,7 +55,7 @@ export class SearchSongsService {
     return ids;
   }
 
-  private async getVideoInfos(ids: string[]) {
+  async getVideoInfos(ids: string[]) {
     const { BASE_API_URL, API_KEY } = process.env;
     const params = buildUrlSearchParams({
       key: API_KEY,
@@ -67,12 +64,22 @@ export class SearchSongsService {
     });
     const stringParams = params.toString();
     const url = BASE_API_URL + "/videos?" + stringParams;
-    const videos = await axios.get<VideoInfosResponse>(url);
+    const {
+      status,
+      data: { items },
+    } = await axios.get<VideoInfosResponse>(url);
 
-    return videos;
+    if (status !== 200)
+      throw new ApiError(
+        "Error on youtube api",
+        HttpStatusCode.InternalServerError,
+        "youtubeApiError"
+      );
+
+    return items;
   }
 
-  private async filterVideosByAgeRestriction(items: VideoInfo[]) {
+  async filterVideosByAgeRestriction(items: VideoInfo[]) {
     const filteredVideos = items.filter(
       ({ contentDetails: { contentRating } }) => {
         const { ytRating } = contentRating;
