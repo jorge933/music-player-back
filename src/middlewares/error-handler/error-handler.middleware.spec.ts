@@ -3,7 +3,7 @@ import { ApiError } from "../../classes/api-error";
 import { errorHandler } from "./error-handler.middleware";
 import { NextFunction, Request, Response } from "express";
 
-fdescribe("errorHandler", () => {
+describe("errorHandler", () => {
   it("should return a response object with a status code and message", () => {
     const error = new ApiError(
       "Internal Server Error",
