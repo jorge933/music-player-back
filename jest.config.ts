@@ -8,6 +8,7 @@ import type { Config } from "jest";
 const config: Config = {
   collectCoverage: true,
   coverageDirectory: "coverage",
+  collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts"],
 };
 
 export default config;
