@@ -13,7 +13,7 @@ jest.mock("../../decorators/post.decorator", () => ({
     .fn()
     .mockImplementation(() => (target, key, descriptor) => descriptor),
 }));
-jest.mock("../../services/downloadSong/downloadSong.service", () => {
+jest.mock("../../services/download-song/download-song.service", () => {
   return {
     DownloadSongService: jest.fn().mockImplementation(() => ({
       downloadSong: jest.fn().mockResolvedValue(FILE_NAME),
