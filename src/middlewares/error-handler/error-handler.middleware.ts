@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ApiError } from "../classes/api-error";
+import { ApiError } from "../../classes/api-error";
 import { HttpStatusCode } from "axios";
 
 export function errorHandler(

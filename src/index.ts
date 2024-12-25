@@ -5,7 +5,7 @@ import "dotenv/config";
 import "express-async-errors";
 import "reflect-metadata";
 
-import { errorHandler } from "./middlewares/error-handler.middleware";
+import { errorHandler } from "./middlewares/error-handler/error-handler.middleware";
 
 import { DownloadSongController } from "./controllers/download-song/download-song.controller";
 import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
