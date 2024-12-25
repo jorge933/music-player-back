@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --watch",
+    "coverage": "jest --coverage",
     "start": "tsc && node --watch dist/index"
   },
   "keywords": [],
