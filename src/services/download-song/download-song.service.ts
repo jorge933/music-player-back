@@ -2,8 +2,8 @@ import fs from "fs";
 import path, { dirname } from "path";
 
 import ytdl, { videoInfo as VideoInfo } from "@distube/ytdl-core";
-import { ApiError } from "../../classes/api-error";
 import { HttpStatusCode } from "axios";
+import { ApiError } from "../../classes/api-error";
 
 export class DownloadSongService {
   private readonly BASE_URL = "https://www.youtube.com/watch?v=";
@@ -41,10 +41,12 @@ export class DownloadSongService {
         buffers.push(chunk);
       });
 
-      stream.on("error", (error) => {
+      stream.on("error", (error: any) => {
+        const statusCode =
+          error.statusCode || HttpStatusCode.InternalServerError;
         const apiError = new ApiError(
           error.message,
-          HttpStatusCode.InternalServerError,
+          statusCode,
           "downloadError"
         );
 
