@@ -11,7 +11,9 @@ export function errorHandler(
   const { statusCode, message, type } = error;
   const responseObj: { [key: string]: string } = { message, type };
 
-  console.log(error);
+  const stringify = JSON.stringify(responseObj);
+
+  console.error(stringify);
 
   res
     ?.status(statusCode || HttpStatusCode.InternalServerError)
