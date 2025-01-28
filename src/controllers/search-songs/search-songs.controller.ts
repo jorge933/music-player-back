@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
-import { Request, Response } from "express";
 
+import { FastifyReply, FastifyRequest } from "fastify";
 import { ApiError } from "../../classes/api-error";
 import { Get } from "../../decorators/get.decorator";
 import { SearchSongsService } from "../../services/search-songs/search-songs.service";
@@ -10,7 +10,10 @@ export class SearchSongsController {
   private readonly searchSongsService = new SearchSongsService();
 
   @Get("")
-  async searchSongs(req: Request, res: Response) {
+  async searchSongs(
+    req: FastifyRequest<{ Querystring: { query: string } }>,
+    reply: FastifyReply
+  ) {
     const { query } = req.query;
 
     const length = query?.length as number;
@@ -24,6 +27,6 @@ export class SearchSongsController {
 
     const songs = await this.searchSongsService.searchSongs(query as string);
 
-    res.json(songs);
+    reply.send(songs);
   }
 }

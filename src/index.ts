@@ -1,57 +1,51 @@
-import bodyParser from "body-parser";
-import express from "express";
-
 import "dotenv/config";
-import "express-async-errors";
 import "reflect-metadata";
 
-import { errorHandler } from "./middlewares/error-handler/error-handler.middleware";
+import { fastify, FastifyInstance } from "fastify";
 
 import { DownloadSongController } from "./controllers/download-song/download-song.controller";
 import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
 import {
-  Controller,
   ControllerRouteMetadata,
   Metadata,
 } from "./interfaces/route-metadata.interface";
 
 class App {
-  private readonly app = express();
+  private readonly app = fastify({ logger: true });
   private readonly controllers = [
     DownloadSongController,
     SearchSongsController,
   ];
 
   constructor() {
-    this.app.use(bodyParser.json());
-
-    this.initializeRoutes();
-
-    this.app.use(errorHandler);
-
-    this.app.listen(1234, () => console.log("listen on 1234"));
+    this.initializeRoutes(this.app);
+    this.app.listen({ port: 1234, host: "0.0.0.0" });
   }
 
-  initializeRoutes() {
+  initializeRoutes(fastify: FastifyInstance) {
     this.controllers.forEach((controllerClass) => {
-      const router = express.Router();
-      const controller: Controller = new controllerClass();
+      const controller = new controllerClass();
 
       const routes = this.getMethodsWithMetadata(controllerClass);
 
-      routes.forEach(({ httpMethod, callbackPropertyName, path }) => {
-        const method = router[httpMethod].bind(router);
-        const callback = controller[callbackPropertyName];
+      const controllerRoutes = (fastify: FastifyInstance) => {
+        routes.forEach(({ callback, httpMethod, path }) => {
+          fastify.route({
+            handler: callback.bind(controller),
+            method: httpMethod,
+            url: path,
+          });
+        });
+      };
 
-        method(path, callback.bind(controller));
-      });
-
-      this.app.use(controller.prefix, router);
+      fastify.register(controllerRoutes, { prefix: controller.prefix });
     });
   }
 
-  getMethodsWithMetadata({ prototype }: Controller) {
-    const properties = Object.getOwnPropertyNames(prototype);
+  getMethodsWithMetadata({ prototype }: (typeof this.controllers)[number]) {
+    const properties = Object.getOwnPropertyNames(
+      prototype
+    ) as (keyof typeof prototype)[];
 
     const routesMetadata = properties.reduce(
       (previousValue: ControllerRouteMetadata[], property) => {
@@ -60,12 +54,13 @@ class App {
           prototype,
           property
         );
+        const callback = prototype[property];
 
-        if (!metadata) return previousValue;
+        if (!metadata || typeof callback !== "function") return previousValue;
 
         return [
           ...previousValue,
-          { callbackPropertyName: property, ...metadata },
+          { callback: callback as () => {}, ...metadata },
         ];
       },
       []

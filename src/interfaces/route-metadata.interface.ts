@@ -8,9 +8,5 @@ export interface Metadata {
 }
 
 export interface ControllerRouteMetadata extends Metadata {
-  callbackPropertyName: string;
+  callback: () => {};
 }
-
-export type Controller = {
-  [key: string]: any;
-};

@@ -29,11 +29,7 @@ export class SearchSongsService {
     );
 
     if (status !== 200)
-      throw new ApiError(
-        "Error on youtube api",
-        HttpStatusCode.InternalServerError,
-        "youtubeApiError"
-      );
+      throw new ApiError("Error on youtube api", status, "youtubeApiError");
 
     const ids = await this.getVideosIds(results.items);
 
