@@ -1,12 +1,15 @@
+import { FastifySchema } from "fastify";
+
 export type Path = string;
 
-export type DecoratorHttpMethods = "get" | "post";
+export type AllowHttpMethods = "get" | "post";
 
-export interface Metadata {
+export interface RouteMetadata {
   path: Path;
-  httpMethod: DecoratorHttpMethods;
+  httpMethod: AllowHttpMethods;
+  schema?: FastifySchema;
 }
 
-export interface ControllerRouteMetadata extends Metadata {
+export interface ControllerRouteMetadata extends RouteMetadata {
   callback: () => {};
 }

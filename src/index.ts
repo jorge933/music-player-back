@@ -7,7 +7,7 @@ import { DownloadSongController } from "./controllers/download-song/download-son
 import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
 import {
   ControllerRouteMetadata,
-  Metadata,
+  RouteMetadata,
 } from "./interfaces/route-metadata.interface";
 
 class App {
@@ -29,11 +29,12 @@ class App {
       const routes = this.getMethodsWithMetadata(controllerClass);
 
       const controllerRoutes = (fastify: FastifyInstance) => {
-        routes.forEach(({ callback, httpMethod, path }) => {
+        routes.forEach(({ callback, httpMethod, path, schema }) => {
           fastify.route({
             handler: callback.bind(controller),
             method: httpMethod,
             url: path,
+            schema,
           });
         });
       };
@@ -49,7 +50,7 @@ class App {
 
     const routesMetadata = properties.reduce(
       (previousValue: ControllerRouteMetadata[], property) => {
-        const metadata: Metadata = Reflect.getMetadata(
+        const metadata: RouteMetadata = Reflect.getMetadata(
           "route",
           prototype,
           property
