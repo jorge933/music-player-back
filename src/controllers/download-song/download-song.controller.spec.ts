@@ -1,13 +1,11 @@
-import { Request } from "express";
 import { DownloadSongController } from "./download-song.controller";
 
+import { FastifyRequest } from "fastify";
 import fs from "fs";
-import { ApiError } from "../../classes/api-error";
 
 const FILE_NAME = "/folder/output-file";
 
 jest.mock("fs");
-jest.mock("express");
 jest.mock("../../decorators/post.decorator", () => ({
   Post: jest
     .fn()
@@ -25,10 +23,11 @@ describe("DownloadSongController", () => {
   let downloadSongController: DownloadSongController;
 
   const mockRequestAndResponse = (videoId: string) => ({
-    req: { body: { videoId } } as Request,
+    req: { body: { videoId } } as FastifyRequest<{ Body: { videoId: string } }>,
     res: {
-      sendFile: jest.fn((filePath: string, callback: () => void) => callback()),
-    } as any,
+      send: jest.fn(),
+      header: jest.fn(),
+    },
   });
 
   beforeEach(() => {
@@ -37,9 +36,12 @@ describe("DownloadSongController", () => {
 
   it("should call res.sendFile and fs.rmSync", async () => {
     const { req, res } = mockRequestAndResponse("XqZsoesa55w");
-    await downloadSongController.downloadVideo(req, res);
 
-    expect(res.sendFile).toHaveBeenCalledWith(FILE_NAME, expect.any(Function));
+    res.send.mockResolvedValueOnce({});
+
+    await downloadSongController.downloadVideo(req, res as any);
+
+    expect(res.send).toHaveBeenCalled();
     expect(fs.rmSync).toHaveBeenCalledWith(FILE_NAME);
   });
 });
