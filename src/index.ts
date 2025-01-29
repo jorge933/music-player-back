@@ -5,13 +5,17 @@ import { fastify, FastifyInstance } from "fastify";
 
 import { DownloadSongController } from "./controllers/download-song/download-song.controller";
 import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
+import { schemaErrorFormatter } from "./hooks/schema-error-formatter.hook";
 import {
   ControllerRouteMetadata,
   RouteMetadata,
 } from "./interfaces/route-metadata.interface";
 
 class App {
-  private readonly app = fastify({ logger: true });
+  private readonly app = fastify({
+    logger: true,
+    schemaErrorFormatter,
+  });
   private readonly controllers = [
     DownloadSongController,
     SearchSongsController,
