@@ -9,21 +9,18 @@ export class SearchSongsController {
   prefix = "/" as const;
   private readonly searchSongsService = new SearchSongsService();
 
-  @Get("")
+  @Get("", {
+    querystring: {
+      type: "object",
+      required: ["query"],
+      properties: { query: { type: "string", minLength: 1 } },
+    },
+  })
   async searchSongs(
     req: FastifyRequest<{ Querystring: { query: string } }>,
     reply: FastifyReply
   ) {
     const { query } = req.query;
-
-    const length = query?.length as number;
-
-    if (length < 1)
-      throw new ApiError(
-        "The query must be longer than 1 character",
-        HttpStatusCode.BadRequest,
-        "invalidQueryLength"
-      );
 
     const songs = await this.searchSongsService.searchSongs(query as string);
 

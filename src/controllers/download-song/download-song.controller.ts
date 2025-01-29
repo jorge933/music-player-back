@@ -10,23 +10,22 @@ import path from "path";
 export class DownloadSongController {
   prefix = "/download" as const;
   private readonly downloadSongService = new DownloadSongService();
-  private readonly idRegex = /^[a-zA-Z0-9-_]{11}$/;
 
-  @Post("")
+  @Post("", {
+    body: {
+      type: "object",
+      required: ["videoId", "videoIdd"],
+      properties: {
+        videoId: { type: "string", pattern: "^[a-zA-Z0-9-_]{11}$" },
+        videoIdd: { type: "string", pattern: "^[a-zA-Z0-9-_]{11}$" },
+      },
+    },
+  })
   async downloadVideo(
     request: FastifyRequest<{ Body: { videoId: string } }>,
     reply: FastifyReply
   ) {
     const { videoId } = request.body;
-
-    const idIsValid = this.idRegex.test(videoId);
-
-    if (!idIsValid)
-      throw new ApiError(
-        "Invalid Video Id",
-        HttpStatusCode.BadRequest,
-        "invalidVideoId"
-      );
 
     const outputFile = await this.downloadSongService.downloadSong(videoId);
 
