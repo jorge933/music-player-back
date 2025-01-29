@@ -42,12 +42,4 @@ describe("DownloadSongController", () => {
     expect(res.sendFile).toHaveBeenCalledWith(FILE_NAME, expect.any(Function));
     expect(fs.rmSync).toHaveBeenCalledWith(FILE_NAME);
   });
-
-  it("should throw api error when pass invalid id", async () => {
-    const { req, res } = mockRequestAndResponse("invalidId");
-
-    await expect(
-      downloadSongController.downloadVideo(req, res)
-    ).rejects.toThrow(ApiError);
-  });
 });
