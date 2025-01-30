@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "start": "tsc && node --watch dist/index"
+    "start": "node --watch dist/index"
   },
   "keywords": [],
   "author": "",
