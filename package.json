@@ -7,7 +7,7 @@
     "coverage": "jest --coverage",
     "build": "tsc && tsc-alias",
     "start": "node --watch dist/index",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register ./src/index.ts",
     "generate-barrels": "barrelsby -d ./src -D -l below"
   },
   "keywords": [],
@@ -33,6 +33,7 @@
     "barrelsby": "^2.8.1",
     "dotenv": "^16.4.5",
     "jest": "^29.7.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
   }
 }
