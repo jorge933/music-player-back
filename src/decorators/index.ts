@@ -4,5 +4,4 @@
 
 export * from "./get.decorator";
 export * from "./post.decorator";
-export * from "./route/route.decorator.spec";
 export * from "./route/route.decorator";
