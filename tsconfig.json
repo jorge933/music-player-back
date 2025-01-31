@@ -9,7 +9,17 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@mp/classes": ["./src/classes"],
+      "@mp/constants": ["./src/constants"],
+      "@mp/controllers": ["./src/controllers"],
+      "@mp/decorators": ["./src/decorators"],
+      "@mp/helpers": ["./src/helpers"],
+      "@mp/hooks": ["./src/hooks"],
+      "@mp/interfaces": ["./src/interfaces"],
+      "@mp/services": ["./src/services"]
+    }
   },
   "include": ["src/**/*.ts", "env.d.ts"],
   "exclude": ["**/*.spec.ts"]
