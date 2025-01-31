@@ -1,13 +1,13 @@
 import axios, { HttpStatusCode } from "axios";
 
-import { ApiError } from "../../classes/api-error";
-import { buildUrlSearchParams } from "../../helpers/buildUrlSearchParams";
+import { ApiError } from "@mp/classes";
+import { buildUrlSearchParams } from "@mp/helpers";
 import {
   SearchItem,
   VideoInfo,
   VideoInfosResponse,
   YouTubeSearchResponse,
-} from "../../interfaces/yt-api-response.interface";
+} from "@mp/interfaces";
 export class SearchSongsService {
   BASE_PROPERTIES = {
     topicId: "/m/04rlf",
@@ -20,7 +20,7 @@ export class SearchSongsService {
     const { API_KEY, BASE_API_URL } = process.env;
     const params = buildUrlSearchParams({
       ...this.BASE_PROPERTIES,
-      key: API_KEY,
+      key: API_KEY as string,
       q: query,
     });
     const url = `${BASE_API_URL}/search?${params.toString()}`;
@@ -54,7 +54,7 @@ export class SearchSongsService {
   async getVideoInfos(ids: string[]) {
     const { BASE_API_URL, API_KEY } = process.env;
     const params = buildUrlSearchParams({
-      key: API_KEY,
+      key: API_KEY as string,
       id: ids,
       part: ["contentDetails", "snippet"],
     });

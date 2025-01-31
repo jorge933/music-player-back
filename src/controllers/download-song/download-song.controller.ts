@@ -1,11 +1,9 @@
 import fs, { createReadStream } from "fs";
 
-import { HttpStatusCode } from "axios";
-import { ApiError } from "../../classes/api-error";
-import { DownloadSongService } from "../../services/download-song/download-song.service";
-import { Post } from "../../decorators/post.decorator";
 import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
+import { Post } from "@mp/decorators";
+import { DownloadSongService } from "@mp/services";
 
 export class DownloadSongController {
   prefix = "/download" as const;
@@ -14,10 +12,9 @@ export class DownloadSongController {
   @Post("", {
     body: {
       type: "object",
-      required: ["videoId", "videoIdd"],
+      required: ["videoId"],
       properties: {
         videoId: { type: "string", pattern: "^[a-zA-Z0-9-_]{11}$" },
-        videoIdd: { type: "string", pattern: "^[a-zA-Z0-9-_]{11}$" },
       },
     },
   })

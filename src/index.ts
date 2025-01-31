@@ -3,13 +3,9 @@ import "reflect-metadata";
 
 import { fastify, FastifyInstance } from "fastify";
 
-import { DownloadSongController } from "./controllers/download-song/download-song.controller";
-import { SearchSongsController } from "./controllers/search-songs/search-songs.controller";
-import { schemaErrorFormatter } from "./hooks/schema-error-formatter.hook";
-import {
-  ControllerRouteMetadata,
-  RouteMetadata,
-} from "./interfaces/route-metadata.interface";
+import { DownloadSongController, SearchSongsController } from "@mp/controllers";
+import { schemaErrorFormatter } from "@mp/hooks";
+import { ControllerRouteMetadata, RouteMetadata } from "@mp/interfaces";
 
 class App {
   private readonly app = fastify({

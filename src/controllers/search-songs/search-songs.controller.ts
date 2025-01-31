@@ -1,9 +1,6 @@
-import { HttpStatusCode } from "axios";
-
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ApiError } from "../../classes/api-error";
-import { Get } from "../../decorators/get.decorator";
-import { SearchSongsService } from "../../services/search-songs/search-songs.service";
+import { Get } from "@mp/decorators";
+import { SearchSongsService } from "@mp/services";
 
 export class SearchSongsController {
   prefix = "/" as const;

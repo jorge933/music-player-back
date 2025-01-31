@@ -1,9 +1,5 @@
 import { FastifySchema } from "fastify";
-import {
-  AllowHttpMethods,
-  RouteMetadata,
-  Path,
-} from "../../interfaces/route-metadata.interface";
+import { AllowHttpMethods, RouteMetadata, Path } from "@mp/interfaces";
 
 export function Route(
   route: Path,

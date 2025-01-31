@@ -2,8 +2,8 @@ import fs from "fs";
 import path, { dirname } from "path";
 
 import ytdl, { videoInfo as VideoInfo } from "@distube/ytdl-core";
+import { ApiError } from "@mp/classes";
 import { HttpStatusCode } from "axios";
-import { ApiError } from "../../classes/api-error";
 
 export class DownloadSongService {
   private readonly BASE_URL = "https://www.youtube.com/watch?v=";

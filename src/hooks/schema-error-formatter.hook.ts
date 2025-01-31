@@ -3,9 +3,7 @@ import {
   SchemaErrorDataVar,
   SchemaErrorFormatter,
 } from "fastify/types/schema";
-import { SCHEMA_ERROR_MESSAGES } from "../constants/schemaErrorMessages";
-import { ApiError } from "../classes/api-error";
-import { HttpStatusCode } from "axios";
+import { SCHEMA_ERROR_MESSAGES } from "@mp/constants";
 
 interface ValidationError extends FastifySchemaValidationError {
   keyword: keyof typeof SCHEMA_ERROR_MESSAGES;
