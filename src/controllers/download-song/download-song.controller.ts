@@ -24,21 +24,8 @@ export class DownloadSongController {
   ) {
     const { videoId } = request.body;
 
-    const outputFile = await this.downloadSongService.downloadSong(videoId);
+    const blob = await this.downloadSongService.downloadSong(videoId);
 
-    const filePath = path.join(__dirname, outputFile);
-
-    const stream = createReadStream(filePath);
-
-    reply.header("Content-Type", "text/plain");
-    reply.header(
-      "Content-Disposition",
-      `attachment; filename="${videoId}.mp3"`
-    );
-
-    reply.send(stream).then(
-      () => fs.rmSync(outputFile),
-      () => {}
-    );
+    reply.send(blob);
   }
 }
