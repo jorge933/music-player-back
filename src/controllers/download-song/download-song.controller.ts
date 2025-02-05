@@ -1,16 +1,13 @@
-import fs, { createReadStream } from "fs";
-
-import { FastifyReply, FastifyRequest } from "fastify";
-import path from "path";
-import { Post } from "@mp/decorators";
+import { Get } from "@mp/decorators";
 import { DownloadSongService } from "@mp/services";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export class DownloadSongController {
-  prefix = "/download" as const;
+  readonly prefix = "/download";
   private readonly downloadSongService = new DownloadSongService();
 
-  @Post("", {
-    body: {
+  @Get("", {
+    querystring: {
       type: "object",
       required: ["videoId"],
       properties: {
@@ -19,12 +16,16 @@ export class DownloadSongController {
     },
   })
   async downloadVideo(
-    request: FastifyRequest<{ Body: { videoId: string } }>,
+    request: FastifyRequest<{
+      Querystring: { videoId: string };
+    }>,
     reply: FastifyReply
   ) {
-    const { videoId } = request.body;
+    const { videoId } = request.query;
 
     const blob = await this.downloadSongService.downloadSong(videoId);
+
+    reply.header("Content-Type", "audio/mpeg");
 
     reply.send(blob);
   }
