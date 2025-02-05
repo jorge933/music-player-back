@@ -59,10 +59,7 @@ class App {
 
         if (!metadata || typeof callback !== "function") return previousValue;
 
-        return [
-          ...previousValue,
-          { callback: callback as () => {}, ...metadata },
-        ];
+        return [...previousValue, { callback: callback, ...metadata }];
       },
       []
     );
