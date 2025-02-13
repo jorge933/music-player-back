@@ -4,3 +4,4 @@
 
 export * from "./route-metadata.interface";
 export * from "./yt-api-response.interface";
+export * from "./song-time-range.interface";
